@@ -1,30 +1,28 @@
 const webpack = require('webpack');
 const path = require('path');
+const glob=require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 const casProxy = require('./proxy');
-
 module.exports = {
   entry: {
-    js: './app/client.js',
-    vendor: [
-      'react', 'classnames', 'react-router', 'react-dom',
-    ],
+    index:'./src/client.js',
+      vendor:['react', 'classnames', 'react-router', 'react-dom']
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: './vendor.js',
+    path:  path.resolve(__dirname, 'dist'),
+      filename: './index.js',
   },
   resolve: {
     extensions: ['', '.js', '.json'],
     alias: {
-      components: __dirname + '/app/components',
-      actions: __dirname + '/app/actions',
-      api: __dirname + '/app/api',
-      reducers: __dirname + '/app/reducers',
-      utils: __dirname + '/app/utils',
-      constants: __dirname + '/app/constants',
-      controllers: __dirname + '/app/controllers',
+      components: __dirname + '/src/components',
+      actions: __dirname + '/src/actions',
+      api: __dirname + '/src/api',
+      reducers: __dirname + '/src/reducers',
+      utils: __dirname + '/src/utils',
+      constants: __dirname + '/src/constants',
+      controllers: __dirname + '/src/controllers',
     },
   },
   module: {
@@ -52,12 +50,12 @@ module.exports = {
        }
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+    new webpack.optimize.CommonsChunkPlugin('vendor','vendor.bundle.js'),
     /*压缩优化代码开始  可以关掉*/
     // new webpack.optimize.UglifyJsPlugin({minimize: true}),
     /*压缩优化代码结束*/
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'app/index.html'),
+      template: path.join(__dirname, 'src/index.html'),
     }),
     new OpenBrowserPlugin({
       url: 'http://localhost:3000'
@@ -65,7 +63,7 @@ module.exports = {
   ],
   devtool: 'source-map',
   devServer: {
-    contentBase: './app/',
+    contentBase: './src/',
     historyApiFallback: true,
     hot: true,
     proxy: casProxy(),
